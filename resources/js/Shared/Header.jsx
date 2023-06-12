@@ -13,9 +13,9 @@ export default function Header() {
 
                 <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto">
                     <InertiaLink className="me-3 py-2 link-body-emphasis text-decoration-none" href="/">Home</InertiaLink>
-                    <InertiaLink className="py-2 link-body-emphasis text-decoration-none" href="/customers/create">Create New Customer</InertiaLink>
-                     
-                    <InertiaLink href="/logout" className="py-2 mx-2 link-body-emphasis btn-link text-decoration-none" method="post" type="button">Logout</InertiaLink>
+                    <InertiaLink className="me-3 py-2 link-body-emphasis text-decoration-none" href="/customers/create">Create New Customer</InertiaLink>
+                    <InertiaLink className="py-2 link-body-emphasis text-decoration-none" href="/users/create">Create New User</InertiaLink>
+                    <Link href="/logout" className="py-2 mx-2 link-body-emphasis btn-link btn text-decoration-none" method="post" as="button">Logout</Link>
                 </nav>
 
             </div>
