@@ -6,7 +6,10 @@ use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
 use App\Http\Resources\CustomerCollection;
 use App\Http\Resources\CustomerResource;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
@@ -16,9 +19,20 @@ class CustomerController extends Controller
     public function index()
     {
         return Inertia::render('Dashboard', [
-             
+
             'customers' => new CustomerCollection(
-                Customer::select(['id', 'name', 'email', 'role', 'status', 'balance', 'created_at'])->paginate())
+                Customer::select(['id', 'name', 'email', 'status', 'balance', 'created_at'])->paginate()
+            )
+        ]);
+    }
+
+    public function users(Customer $customer)
+    {
+        return Inertia::render('Customers/Users', [
+            'customer' => new UserResource($customer),
+            'users' => new UserCollection(
+                $customer->users()->paginate()
+            )
         ]);
     }
 
@@ -43,7 +57,8 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function update(CustomerUpdateRequest $request, Customer $customer){
+    public function update(CustomerUpdateRequest $request, Customer $customer)
+    {
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->status = $request->status;
@@ -51,6 +66,4 @@ class CustomerController extends Controller
         $customer->save();
         return Redirect::route('customers')->with('success', 'Customer updated.');
     }
-
-
 }

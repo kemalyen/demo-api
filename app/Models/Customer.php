@@ -17,6 +17,11 @@ class Customer extends Model
         'status' => 'boolean'
     ];
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
     protected function status(): Attribute
     {
         return Attribute::make(

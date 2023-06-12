@@ -4,15 +4,16 @@ import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import Pagination from '@/Shared/Pagination';
 
 const Dashboard = () => {
-    const { customers } = usePage().props;
+    const { users, customer } = usePage().props;
     const {
         data,
         meta: { links }
-    } = customers;
+    } = users;
  
     return (
         <>
-            <h3>Customer List</h3>
+            <h3>{customer.data.name}: Users List</h3>
+
             <div className="table-responsive">
                 <table className="table table-bordered">
                     <thead>
@@ -20,9 +21,6 @@ const Dashboard = () => {
                             <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Status</th>
-                            <th>Balance</th>
-                            <th>Users</th>
                             <th>Created At</th>
                             <th></th>
                         </tr>
@@ -34,22 +32,11 @@ const Dashboard = () => {
                                     <td>{id}</td>
                                     <td>{name}</td>
                                     <td>{email}</td>
-                                    <td>{status}</td>
-                                    <td>{balance}</td>
-                                    <td>
-                                    <InertiaLink
-                                            tabIndex="-1"
-                                            href={`/customers/${id}/users`}
-                                            className="btn btn-sm btn-primary"
-                                        >
-                                            User List
-                                        </InertiaLink>
-                                    </td>
                                     <td>{created_at}</td>
                                     <td>
                                         <InertiaLink
                                             tabIndex="-1"
-                                            href={`/customers/${id}/edit`}
+                                            href={`/users/${id}/edit`}
                                             className="btn btn-sm btn-primary"
                                         >
                                             Update
@@ -68,7 +55,7 @@ const Dashboard = () => {
 
             {data.length === 0 && (
                 <div className="alert alert-warning" role="alert">
-                    There's no customer
+                    There's no user
                 </div>
             )}
         </>
