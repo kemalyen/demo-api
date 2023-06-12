@@ -7,10 +7,7 @@ use App\Http\Requests\CustomerUpdateRequest;
 use App\Http\Resources\CustomerCollection;
 use App\Http\Resources\CustomerResource;
 use App\Http\Resources\UserCollection;
-use App\Http\Resources\UserResource;
 use App\Models\Customer;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 
@@ -29,7 +26,7 @@ class CustomerController extends Controller
     public function users(Customer $customer)
     {
         return Inertia::render('Customers/Users', [
-            'customer' => new UserResource($customer),
+            'customer' => new CustomerResource($customer),
             'users' => new UserCollection(
                 $customer->users()->paginate()
             )
