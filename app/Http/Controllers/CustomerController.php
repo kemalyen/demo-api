@@ -8,59 +8,50 @@ use App\Http\Resources\CustomerCollection;
 use App\Http\Resources\CustomerResource;
 use App\Http\Resources\UserCollection;
 use App\Models\Customer;
-use Inertia\Inertia;
+
 use Illuminate\Support\Facades\Redirect;
 
 class CustomerController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Dashboard', [
+        return  new CustomerCollection(
+            Customer::select(['id', 'name', 'email', 'status', 'balance', 'created_at'])->paginate()
+        );
+    }
 
-            'customers' => new CustomerCollection(
-                Customer::select(['id', 'name', 'email', 'status', 'balance', 'created_at'])->paginate()
-            )
-        ]);
+
+    public function single(Customer $customer)
+    {
+        return new CustomerResource($customer);
     }
 
     public function users(Customer $customer)
     {
-        return Inertia::render('Customers/Users', [
+        return [
             'customer' => new CustomerResource($customer),
             'users' => new UserCollection(
                 $customer->users()->paginate()
             )
-        ]);
+        ];
     }
-
-    public function create()
-    {
-        return Inertia::render('Customers/Create');
-    }
-
+ 
     public function store(CustomerStoreRequest $request)
     {
         $customer =  new Customer();
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->save();
-        return Redirect::route('customers')->with('success', 'Customer created.');
-    }
-
-    public function edit(Customer $customer)
-    {
-        return Inertia::render('Customers/Edit', [
-            'customer' => new CustomerResource($customer),
-        ]);
-    }
+        return new CustomerResource($customer);
+    } 
 
     public function update(CustomerUpdateRequest $request, Customer $customer)
     {
         $customer->name = $request->name;
         $customer->email = $request->email;
-        $customer->status = $request->status;
-        $customer->balance = $request->balance;
+        $customer->status = ($request->status ? $request->status : 0);
+        $customer->balance = ($request->balance ? $request->balance : 0);
         $customer->save();
-        return Redirect::route('customers')->with('success', 'Customer updated.');
+        return new CustomerResource($customer);
     }
 }

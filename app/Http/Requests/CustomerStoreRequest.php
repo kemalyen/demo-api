@@ -24,7 +24,7 @@ class CustomerStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:50', 'min:3'],
-            'email' => ['required', 'max:50', 'email', Rule::unique('customers')],
+            'email' => ['required', 'max:150', 'email', Rule::unique('customers')],
         ];
     }
 }
